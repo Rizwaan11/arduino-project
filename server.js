@@ -20,6 +20,9 @@ let latestReadings = {
   timestamp: null
 };
 
+app.get("/", (req, res) => {
+  res.send("Welcome to the ESP32 Readings Server");
+}
 // ESP32 → Backend (POST readings)
 app.post("/api/readings", (req, res) => {
   const { temperature, humidity } = req.body;
