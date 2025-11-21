@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Solar Still Readings</title>
+    <meta http-equiv="refresh" content="3"> <!-- auto refresh -->
+    <style>
+        body { 
+            font-family: Arial; 
+            background: #f4f4f4; 
+            padding: 20px; 
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h2 { margin-top: 0; }
+        .status-on { color: green; font-weight: bold; }
+        .status-off { color: red; font-weight: bold; }
+    </style>
+</head>
+
+<body>
+    <h1>Solar Still Sensor Readings</h1>
+
+    <% if (!data) { %>
+        <div class="card">
+            <h2>No data received yet...</h2>
+        </div>
+    <% } else { %>
+    
+    <div class="card">
+        <h2>Main Readings</h2>
+        <p><strong>Water Temperature:</strong> <%= data.waterTemp %> °C</p>
+        <p><strong>Water Level:</strong> <%= data.waterLevel %> %</p>
+        <p><strong>Mode:</strong> <%= data.autoMode ? "AUTO" : "MANUAL" %></p>
+    </div>
+
+    <div class="card">
+        <h2>Outputs Status</h2>
+        <p>Pump: 
+            <% if (data.pumpOn) { %>
+                <span class="status-on">ON</span>
+            <% } else { %>
+                <span class="status-off">OFF</span>
+            <% } %>
+        </p>
+
+        <p>Heater: 
+            <% if (data.heaterOn) { %>
+                <span class="status-on">ON</span>
+            <% } else { %>
+                <span class="status-off">OFF</span>
+            <% } %>
+        </p>
+
+        <p>Valve: 
+            <% if (data.valveOn) { %>
+                <span class="status-on">ON</span>
+            <% } else { %>
+                <span class="status-off">OFF</span>
+            <% } %>
+        </p>
+    </div>
+
+    <div class="card">
+        <h2>Temperature Sensors</h2>
+        <ul>
+            <% data.temps.forEach((t, i) => { %>
+                <li>Sensor <%= i+1 %>: <%= t === null ? "N/A" : t + " °C" %></li>
+            <% }) %>
+        </ul>
+    </div>
+
+    <% } %>
+</body>
+</html>
