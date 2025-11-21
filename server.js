@@ -17,12 +17,13 @@ app.set("views", path.join(__dirname, "views"));
 let latestReadings = {
   temperature: null,
   humidity: null,
-  timestamp: null
+  timestamp: null,
 };
 
 app.get("/", (req, res) => {
+  console.log("🏠 Home Route Accessed");
   res.send("Welcome to the ESP32 Readings Server");
-})
+});
 // ESP32 → Backend (POST readings)
 app.post("/api/readings", (req, res) => {
   const { temperature, humidity } = req.body;
@@ -34,7 +35,7 @@ app.post("/api/readings", (req, res) => {
   latestReadings = {
     temperature,
     humidity,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   };
 
   console.log("📥 New Readings Received:", latestReadings);
