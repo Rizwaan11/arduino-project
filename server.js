@@ -1,9 +1,13 @@
 import express from "express";
 import path from "path";
+import bodyParser from "body-parser";
+import cors from "cors";
 import { fileURLToPath } from "url";
 
 const app = express();
 app.use(express.json());
+app.use(cors());
+app.use(bodyParser.json());
 
 // Fix __dirname for ES Modules
 const __filename = fileURLToPath(import.meta.url);
@@ -24,34 +28,15 @@ app.get("/", (req, res) => {
   console.log("🏠 Home Route Accessed");
   res.send("Welcome to the ESP32 Readings Server");
 });
-// ESP32 → Backend (POST readings)
-app.post("/api/readings", (req, res) => {
-  const { temperature, humidity } = req.body;
 
-  if (temperature === undefined || humidity === undefined) {
-    return res.status(400).json({ message: "Missing readings" });
-  }
+app.post("/readings", (req, res) => {
+  console.log("📥 New ESP32 Data Received:");
+  console.log(req.body);
+  console.log("------------------------------");
 
-  latestReadings = {
-    temperature,
-    humidity,
-    timestamp: new Date().toISOString(),
-  };
-
-  console.log("📥 New Readings Received:", latestReadings);
-
-  res.json({ message: "Readings saved", latestReadings });
+  res.json({ success: true, message: "Data received" });
 });
 
-// Backend → Browser (show readings in webpage)
-app.get("/readings", (req, res) => {
-  res.render("readings", { latestReadings });
-});
-
-// Check from Postman
-app.get("/api/readings", (req, res) => {
-  res.json(latestReadings);
-});
 
 const PORT = 5000;
 app.listen(PORT, () => {
